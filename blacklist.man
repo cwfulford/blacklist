@@ -25,8 +25,8 @@ facility.
 Prints the script version and exits.
 .SH FILES
 .IP
-.IR /etc/mail/access
-.IR /etc/mail/access.db
+.IR /etc/mail/access ,
+.IR /etc/mail/access.db .
 .SH EXAMPLES
 The following line is added to the "\fI/etc/mail/aliases\fR" file. Logging
 is enabled.
