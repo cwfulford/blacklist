@@ -12,7 +12,7 @@ and Linux.
 .SH DESCRIPTION
 .B blacklist
 is designed to be put on a pipe recieving e-mail messages. It may be invoked
-manually see \fBEXAMPLES\fR but is best used used to process messages 
+manually (see \fBEXAMPLES\fR below) but is best used used to process messages 
 bounced to the \fIblacklist\fR user automatically.
 .SH OPTIONS
 .TP 5
@@ -31,6 +31,8 @@ is enabled.
 blacklist:	"|/usr/local/etc/blacklist -l"
 .ft R
 .fi
+.LP
+To manually invoke the script:
 .nf
 .ft CW
 cat <mailbox> |/usr/local/etc/blacklist
