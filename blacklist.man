@@ -23,6 +23,10 @@ facility.
 .TP 5
 .B -V
 Prints the script version and exits.
+.SH FILES
+.IP
+.IR /etc/mail/access
+.IR /etc/mail/access.db
 .SH EXAMPLES
 The following line is added to the "\fI/etc/mail/aliases\fR" file. Logging
 is enabled.
@@ -40,8 +44,5 @@ cat <mailbox> |/usr/local/etc/blacklist
 .fi
 .SH BUGS
 None known
-.SH FILES
-.IR /etc/mail/access
-.IR /etc/mail/access.db
 .SH AUTHOR
 Clifford W Fulford, City Linux. Contact fulford@fulford.net or +44 (0)793 572 8612
