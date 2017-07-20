@@ -1,9 +1,9 @@
-.TH BLACKLIST 8l "20 July r1.12
+.TH BLACKLIST 8l "20 July r1.13
 .SH NAME
 .B blacklist
 - updates the \fI/etc/mail/access.db\fR database.
 .SH SYNOPSIS
-<cmd>|\fBblacklist [\fB-l\fR] 
+<cmd>|\fBblacklist\fR [\fB-l\fR]|[\fB-V\fR] 
 .br
 .SH AVAILABILITY
 .B blacklist
@@ -20,6 +20,9 @@ bounced to the \fIblacklist\fR user automatically.
 turns on logging using the 
 .B syslog
 facility. 
+.TP 5
+.B -V
+Prints the script version and exits.
 .SH EXAMPLES
 The following line is added to the "\fI/etc/mail/aliases\fR" file. Logging
 is enabled.
