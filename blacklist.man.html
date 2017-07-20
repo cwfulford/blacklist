@@ -1,0 +1,69 @@
+<h2 id="heading1">NAME</h2>
+<p class="indent">
+<b><a href="./scripts.php?script=blacklist">blacklist</a></b>
+- updates the 
+<i>/etc/mail/access.db</i>
+ database.
+</p>
+<h2 id="heading2">SYNOPSIS</h2>
+<p class="indent">
+&lt;cmd&gt;|
+<b><a href="./scripts.php?script=blacklist">blacklist</a> [</b>
+<b>-l</b>
+] 
+<br/>
+</p>
+<h2 id="heading3">AVAILABILITY</h2>
+<p class="indent">
+<b><a href="./scripts.php?script=blacklist">blacklist</a></b>
+is a Bourne shell script which should work equally well on all versions of UNIX
+and Linux.
+</p>
+<h2 id="heading4">DESCRIPTION</h2>
+<p class="indent">
+<b><a href="./scripts.php?script=blacklist">blacklist</a></b>
+is designed to be put on a pipe recieving e-mail messages. It may be invoked
+manually see EXAMPLES but is best used used automatically to process messages
+<p class="indent">
+bounced to the 
+<i>blacklist</i>
+ user.
+</p>
+<h2 id="heading5">OPTIONS</h2>
+<p class="indent">
+</p>
+<p class="indent">
+<b>-l</b>&nbsp;&nbsp;&nbsp;
+turns on logging using the 
+<b>syslog</b>
+facility. 
+</p>
+<h2 id="heading6">EXAMPLES</h2>
+<p class="indent">
+The following line is added to the "
+<i>/etc/mail/aliases</i>
+" file. Logging
+is enabled.
+</p><div class="cmdline">
+<pre>
+blacklist:	"|/usr/local/etc/blacklist -l"
+</pre></div>
+<p class="indent">
+</p><div class="cmdline">
+<pre>
+cat &lt;mailbox&gt; |/usr/local/etc/blacklist
+</p>
+<p class="indent">
+</p>
+<h2 id="heading8">BUGS</h2>
+<p class="indent">
+None known
+.SH Files
+.IR /etc/mail/access
+.IR /etc/mail/access.db
+</p>
+<h2 id="heading10">AUTHOR</h2>
+<p class="indent">
+Clifford W Fulford, City Linux. Contact fulford@fulford.net or +44 (0)793 572 8612
+</p>
+	
