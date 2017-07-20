@@ -38,7 +38,7 @@ To manually invoke the script:
 cat <mailbox> |/usr/local/etc/blacklist
 .SH BUGS
 None known
-.SH Files
+.SH FILES
 .IR /etc/mail/access
 .IR /etc/mail/access.db
 .SH AUTHOR
