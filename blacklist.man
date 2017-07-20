@@ -36,7 +36,6 @@ To manually invoke the script:
 .nf
 .ft CW
 cat <mailbox> |/usr/local/etc/blacklist
-.LP
 .SH BUGS
 None known
 .SH Files
