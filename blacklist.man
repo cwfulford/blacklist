@@ -12,8 +12,8 @@ and Linux.
 .SH DESCRIPTION
 .B blacklist
 is designed to be put on a pipe recieving e-mail messages. It may be invoked
-manually see EXAMPLES but is best used used automatically to process messages
-bounced to the \fIblacklist\fR user.
+manually see \fBEXAMPLES\fR but is best used used to process messages 
+bounced to the \fIblacklist\fR user automatically.
 .SH OPTIONS
 .TP 5
 .B -l
