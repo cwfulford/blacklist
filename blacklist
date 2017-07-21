@@ -1,19 +1,19 @@
 #!/bin/bash
-# $Id: blacklist,v 1.30 2017/07/21 14:11:25 fulford Exp $
+# $Id: blacklist,v 1.31 2017/07/21 14:15:35 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.30 $
+# $Revision: 1.31 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
 # For assistance contact fulford@fulford.net 0793 572 8612
 ########################################################################
 cmd=`basename $0`
-ver=`echo "$Id: blacklist,v 1.30 2017/07/21 14:11:25 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.31 2017/07/21 14:15:35 fulford Exp $"|awk '{print $3,$4,$5}'`
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.30 $ $Date: 2017/07/21 14:11:25 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.31 $ $Date: 2017/07/21 14:15:35 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 TARGET=access
@@ -41,7 +41,7 @@ sudo /bin/cp $TARGET $DEST
 sudo /usr/bin/ci -m -q $TARGET
 cd $TARGETDIR 
 sudo /usr/bin/make access.db 
-smpid=`sudo /bin/cat /var/run/sendmail.pid|awk </var/run/sendmail.pid 'NR == 1 {print $1}'`
+smpid=`sudo /bin/cat /var/run/sendmail.pid|awk 'NR == 1 {print $1}'`
 sudo /bin/kill -1 $smpid 
 [ $log ] && logger -t blacklist $list blacklisted
 rm $TMP
