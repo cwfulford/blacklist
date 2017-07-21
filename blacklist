@@ -1,19 +1,19 @@
 #!/bin/bash
-# $Id: blacklist,v 1.26 2017/07/21 10:15:32 fulford Exp $
+# $Id: blacklist,v 1.27 2017/07/21 10:35:51 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.26 $
+# $Revision: 1.27 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
 # For assistance contact fulford@fulford.net 0793 572 8612
 ########################################################################
 cmd=`basename $0`
-ver=`echo "$Id: blacklist,v 1.26 2017/07/21 10:15:32 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.27 2017/07/21 10:35:51 fulford Exp $"|awk '{print $3,$4,$5}'`
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.26 $ $Date: 2017/07/21 10:15:32 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.27 $ $Date: 2017/07/21 10:35:51 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 TARGET=access
@@ -23,17 +23,18 @@ TARGETDIR=/etc/mail
 SRC=$SRCDIR/$TARGET
 export DEST=$TARGETDIR/$TARGET
 cd $SRCDIR
-TMP=/tmp/${TARGET}$$
+TMP=/tmp/${TARGET}
+list=`grep ^From: |sed -e 's/.*<\(.*\)>/\1/g'|
+	grep .*@.*\.[a-z]*|
+	sed -e 's/\(.*\)/\1 REJECT/'
+`
 # The script will be running with the daemon id, ensure daemon has RCS
 # access to the source file eg. "rcs -a daemon access"
 sudo -n /usr/bin/co -l -q $TARGET 
-cp $TARGET $TMP
-list=`grep ^From: |sed -e 's/.*<\(.*\)>/\1/g'|
-	grep .*@.*\.[a-z]*|
-	sed -e 's/\(.*\)/\1 REJECT/'|
-	tee -a $TMP`
+sudo /bin/cat $TARGET |dd of=$TMP
+echo $list >>$TMP
 # makemap will fail if there are duplicate entries in the access file
-cat $TMP|sort -u >$SRC
+cat $TMP|sort -u |/usr/bin/dd of=$SRC
 # Ensure sudoers is configured to enable daemon to carry out the exact commands
 # as below after the variables have been expanded. 
 sudo /bin/cp $TARGET $DEST
