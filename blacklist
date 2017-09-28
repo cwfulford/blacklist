@@ -1,19 +1,19 @@
 #!/bin/bash
-# $Id: blacklist,v 1.38 2017/09/05 15:47:32 fulford Exp $
+# $Id: blacklist,v 1.39 2017/09/28 09:21:52 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.38 $
+# $Revision: 1.39 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
 # For assistance contact fulford@fulford.net 0793 572 8612
 ########################################################################
 cmd=`basename $0`
-ver=`echo "$Id: blacklist,v 1.38 2017/09/05 15:47:32 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.39 2017/09/28 09:21:52 fulford Exp $"|awk '{print $3,$4,$5}'`
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.38 $ $Date: 2017/09/05 15:47:32 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.39 $ $Date: 2017/09/28 09:21:52 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 TARGET=access
@@ -24,10 +24,20 @@ SRC=$SRCDIR/$TARGET
 export DEST=$TARGETDIR/$TARGET
 cd $SRCDIR
 TMP=/tmp/${TARGET}
-blacklist=`grep ^Return-Path: |sed -e 's/Return-Path.*@\(.*\)>/\1/g'|
+
+address=`grep ^Return-Path: |sed -e 's/Return-Path: <\(.*@.*\)>/\1/'`
+
+domain=`echo $address|sed -e 's/.*@\(.*\)>/\1/g'|
 	sed -e 's/\(.*\)/\1\t REJECT/'|
-	tee $TMP
-`
+	tee $TMP`
+
+# Spare legitimate domains 
+for d in gmail.com ;do
+ 	if [ $domain == $d ] ;then
+		blacklist=$address
+	else
+		blacklist=$domain
+	fi
 echo "`date`: $blacklist" >>/var/log/blacklist
 # The script will be running with the daemon id, ensure daemon has RCS
 # access to the source file eg. "rcs -a daemon access"
