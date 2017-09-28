@@ -1,19 +1,21 @@
 #!/bin/bash
-# $Id: blacklist,v 1.41 2017/09/28 09:43:22 fulford Exp $
+# $Id: blacklist,v 1.42 2017/09/28 11:01:34 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.41 $
+# $Revision: 1.42 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
 # For assistance contact fulford@fulford.net 0793 572 8612
 ########################################################################
+set -x
 cmd=`basename $0`
-ver=`echo "$Id: blacklist,v 1.41 2017/09/28 09:43:22 fulford Exp $"|awk '{print $3,$4,$5}'`
+config=/usr/local/etc/blacklist.cf
+ver=`echo "$Id: blacklist,v 1.42 2017/09/28 11:01:34 fulford Exp $"|awk '{print $3,$4,$5}'`
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.41 $ $Date: 2017/09/28 09:43:22 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.42 $ $Date: 2017/09/28 11:01:34 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 TARGET=access
@@ -30,7 +32,8 @@ address=`grep ^Return-Path: |sed -e 's/Return-Path: <\(.*@.*\)>/\1/'`
 domain=`echo $address|sed -e 's/.*@\(.*\)/\1/g'`
 
 # Spare legitimate domains 
-for d in gmail.com ;do
+access = awk <$config '{printf "%s ",$1}'
+for d in $access ;do
  	if [ $domain == $d ] ;then
 		blacklist=$address
 	else
