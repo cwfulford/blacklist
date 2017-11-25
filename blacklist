@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: blacklist,v 1.87 2017/11/25 22:23:23 fulford Exp $
+# $Id: blacklist,v 1.88 2017/11/25 22:24:46 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.87 $
+# $Revision: 1.88 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -9,14 +9,14 @@
 ########################################################################
 cmd=`basename $0`
 config=/usr/local/etc/blacklist.cf
-ver=`echo "$Id: blacklist,v 1.87 2017/11/25 22:23:23 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.88 2017/11/25 22:24:46 fulford Exp $"|awk '{print $3,$4,$5}'`
 sysadmin=fulford@fulford.net
 
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.87 $ $Date: 2017/11/25 22:23:23 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.88 $ $Date: 2017/11/25 22:24:46 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 TARGET=access
@@ -49,7 +49,7 @@ for d in $access ;do
 		blacklist=$address
 	fi
 done
-echo "Blacklist ${blacklist} [y/n]? "
+echo -n "Blacklist ${blacklist} [y/n]? "
 read answer < /dev/tty
 if [ "$answer" == "y" ];then
 	
@@ -73,4 +73,4 @@ if [ "$answer" == "y" ];then
 	logger -t blacklist "$blacklist blacklisted"
 	rm $TMP
 fi
-read ought
+read ought </dev/tty
