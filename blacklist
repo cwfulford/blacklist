@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: blacklist,v 1.98 2018/05/31 18:58:31 fulford Exp $
+# $Id: blacklist,v 1.99 2018/05/31 19:03:24 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.98 $
+# $Revision: 1.99 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -10,14 +10,14 @@
 cmd=`basename $0`
 
 config=/usr/local/etc/blacklist.cf
-ver=`echo "$Id: blacklist,v 1.98 2018/05/31 18:58:31 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.99 2018/05/31 19:03:24 fulford Exp $"|awk '{print $3,$4,$5}'`
 sysadmin=fulford@fulford.net
 
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.98 $ $Date: 2018/05/31 18:58:31 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.99 $ $Date: 2018/05/31 19:03:24 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 ADMINHOST=admin
@@ -27,7 +27,6 @@ SRCDIR=/src/admin/etc/mail
 TARGETDIR=/etc/mail
 SRC=$SRCDIR/$TARGET
 export DEST=$TARGETDIR/$TARGET
-cd $SRCDIR
 TMP=/tmp/${TARGET}
 
 address=`grep "^Return-Path: " | sed -e 's/Return-Path: <\([^>]*\)>/\1/'`
@@ -63,20 +62,23 @@ if [ "$answer" == "y" ];then
 	# The script will be running with the daemon id, ensure daemon has RCS
 	# access to the source file eg. "rcs -a daemon access"
 	
-	sudo -u fulford ssh $ADMINHOST "sudo -n /usr/bin/co -l -q $TARGET 
-	sudo /bin/cat $TARGET >>$TMP
-	# makemap will fail if there are duplicate entries in the access file
-	cat $TMP|sort -u |sudo /usr/bin/dd of=$TARGET  2>/dev/null
-	# Ensure sudoers is configured to enable daemon to carry out the
-	# exact commands as below after the variables have been expanded. 
-	sudo /bin/cp $TARGET $DEST
-	sudo /usr/bin/ci -m -q $TARGET
-	cd $TARGETDIR 
-	/usr/bin/make access.db
-	smpid=`sudo /bin/cat /var/run/sendmail.pid|awk 'NR == 1 {print $1}'`
-	sudo /bin/kill -1 $smpid 
-	logger -t blacklist \"$blacklist blacklisted\"
-	rm $TMP"
+	sudo -u fulford ssh $ADMINHOST "cd $SRCDIR
+		sudo -n /usr/bin/co -l -q $TARGET 
+		sudo /bin/cat $TARGET >>$TMP
+		# makemap will fail if there are duplicate entries in the
+		# access file
+		cat $TMP|sort -u |sudo /usr/bin/dd of=$TARGET  2>/dev/null
+		# Ensure sudoers is configured to enable daemon to carry out the
+		# exact commands as below after the variables have been expanded. 
+		sudo /bin/cp $TARGET $DEST
+		sudo /usr/bin/ci -m -q $TARGET
+		cd $TARGETDIR 
+		/usr/bin/make access.db
+		smpid=`sudo /bin/cat /var/run/sendmail.pid|
+			awk 'NR == 1 {print $1}'`
+		sudo /bin/kill -1 $smpid 
+		logger -t blacklist \"$blacklist blacklisted\"
+		rm $TMP"
 	
 	echo "$blacklist blacklisted."
 else
