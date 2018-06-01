@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: blacklist,v 1.113 2018/06/01 16:49:24 fulford Exp $
+# $Id: blacklist,v 1.114 2018/06/01 16:51:56 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.113 $
+# $Revision: 1.114 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -10,14 +10,14 @@
 cmd=`basename $0`
 
 config=/usr/local/etc/blacklist.cf
-ver=`echo "$Id: blacklist,v 1.113 2018/06/01 16:49:24 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.114 2018/06/01 16:51:56 fulford Exp $"|awk '{print $3,$4,$5}'`
 sysadmin=fulford@fulford.net
 
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.113 $ $Date: 2018/06/01 16:49:24 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.114 $ $Date: 2018/06/01 16:51:56 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 export ADMINHOST=admin
@@ -57,10 +57,7 @@ read answer <&2
 answer=${answer:-"y"}
 if [ "$answer" == "y" ];then
 	
-	export BLACKLIST=`echo $blacklist|sed -e 's/\(.*\)/\1\t REJECT/'
-	
-	# The script will be running with the daemon id, ensure daemon has RCS
-	# access to the source file eg. "rcs -a daemon access"
+	export BLACKLIST=`echo $blacklist|sed -e 's/\(.*\)/\1\t REJECT/'`
 	id	
 	ssh $ADMINHOST "
 		set -x
