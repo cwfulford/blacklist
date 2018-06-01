@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: blacklist,v 1.120 2018/06/01 18:27:55 fulford Exp $
+# $Id: blacklist,v 1.121 2018/06/01 18:34:06 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.120 $
+# $Revision: 1.121 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -10,14 +10,14 @@
 cmd=`basename $0`
 
 config=/usr/local/etc/blacklist.cf
-ver=`echo "$Id: blacklist,v 1.120 2018/06/01 18:27:55 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.121 2018/06/01 18:34:06 fulford Exp $"|awk '{print $3,$4,$5}'`
 sysadmin=fulford@fulford.net
 
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.120 $ $Date: 2018/06/01 18:27:55 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.121 $ $Date: 2018/06/01 18:34:06 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 export ADMINHOST=admin
@@ -31,6 +31,8 @@ export SRC=$SRCDIR/$TARGET
 export DEST=$TARGETDIR/$TARGET
 export TMP=/tmp/${TARGET}
 
+_error () { echo "$cmd: error on line $1";  ;}
+_end () { echo -n 'Press "Return" to continue';read ought </dev/tty ;}
 
 address=`grep "^Return-Path: " | sed -e 's/Return-Path: <\([^>]*\)>/\1/'`
 echo "address = $address"
@@ -53,7 +55,6 @@ for ld in $ldomains ;do
 		blacklist=$address
 	fi
 done
-_error () { echo "$cmd: error on line $1" ;}
 echo -n "Blacklist ${blacklist} [y/n]? "
 read answer <&2 
 answer=${answer:-"y"}
@@ -68,14 +69,14 @@ if [ "$answer" == "y" ];then
 		echo \"SRCDIR = $SRCDIR\"
 		cd $SRCDIR
 		hostname	
-		co -l -q $TARGET || _error
+		co -l -q $TARGET ||{ _error; _end ;}
 		echo $BLACKLIST >$TMP
 		cat $TARGET >>$TMP
 		# makemap will fail if there are duplicate entries in the
 		# access file
 		cat $TMP|sort -u > $TARGET  #2>/dev/null
 		cat $TARGET|ssh $MAILHOST sudo dd of=$DEST
-		/usr/bin/ci -m -q $TARGET
+		/usr/bin/ci -m -q $TARGET ||{ _error $LINENO;_end ;}
 		rm $TMP
 		exit
 		"
@@ -94,5 +95,4 @@ if [ "$answer" == "y" ];then
 else
 	echo "$blacklist has not been blacklisted."
 fi
-echo -n 'Press "Return" to continue'
-read ought </dev/tty
+_end
