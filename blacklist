@@ -1,7 +1,7 @@
 #!/bin/bash
-# $Id: blacklist,v 1.131 2018/06/04 08:44:17 fulford Exp $
+# $Id: blacklist,v 1.132 2018/07/12 15:43:04 fulford Exp fulford $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
-# $Revision: 1.131 $
+# $Revision: 1.132 $
 # Author C W Fulford.
 # Copyright 2017 (c) C W Fulford.
 # Licensed for public use under the LGPL, .
@@ -10,21 +10,21 @@
 cmd=`basename $0`
 
 config=/usr/local/etc/blacklist.cf
-ver=`echo "$Id: blacklist,v 1.131 2018/06/04 08:44:17 fulford Exp $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.132 2018/07/12 15:43:04 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
 sysadmin=fulford@fulford.net
 
 syntax="$cmd  [-l] | [-V]"
 while [ $# -gt 0 ] ;do
 	case $1 in 
 		-l) log=:;shift;;			
-		-V) echo "$cmd $Revision: 1.131 $ $Date: 2018/06/04 08:44:17 $"|awk '{print $1,$3,$6}';exit;;  
+		-V) echo "$cmd $Revision: 1.132 $ $Date: 2018/07/12 15:43:04 $"|awk '{print $1,$3,$6}';exit;;  
 	esac
 done
 export ADMINHOST=admin
 export MAILHOST=mail
 export LOG=/var/log/blacklist/blacklist.log
 export TARGET=access
-export SRCDIR=/src/admin/etc/mail
+export SRCDIR=/src/mail/etc/mail
 # CityLinux keeps RCS records of critical files in separate file system 
 export TARGETDIR=/etc/mail
 export SRC=$SRCDIR/$TARGET
