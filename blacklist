@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: blacklist,v 1.132 2018/07/12 15:43:04 fulford Exp fulford $
+# $Id: blacklist,v 1.132 2018/07/12 15:43:04 fulford Exp $
 # $Source: /src/admin/usr/local/etc/RCS/blacklist,v $
 # $Revision: 1.132 $
 # Author C W Fulford.
@@ -10,7 +10,7 @@
 cmd=`basename $0`
 
 config=/usr/local/etc/blacklist.cf
-ver=`echo "$Id: blacklist,v 1.132 2018/07/12 15:43:04 fulford Exp fulford $"|awk '{print $3,$4,$5}'`
+ver=`echo "$Id: blacklist,v 1.132 2018/07/12 15:43:04 fulford Exp $"|awk '{print $3,$4,$5}'`
 sysadmin=fulford@fulford.net
 
 syntax="$cmd  [-l] | [-V]"
